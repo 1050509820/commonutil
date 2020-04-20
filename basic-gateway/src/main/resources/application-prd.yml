@@ -1,0 +1,80 @@
+eureka:
+  client:
+    serviceUrl:
+      defauleZone: http://192.168.40.127:8761/eureka/
+    registry-fetch-interval-seconds: 10
+  instance:
+    lease-expiration-duration-in-seconds: 30
+    lease-renewal-interval-in-seconds: 15
+
+server:
+  port: 5000
+
+spring:
+  application:
+    name: basic-gateway
+  http:
+    multipart:
+      max-file-size: 10Mb
+      max-request-size: 10Mb
+      
+logging:
+  file: logs/basic-gateway.log
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000
+
+ribbon:
+  ReadTimeout: 5000
+  ConnectTimeout: 5000
+  MaxAutoRetries: 0 
+  MaxAutoRetriesNextServer: 1 
+  OkToRetryOnAllOperations: true  
+
+zuul:
+  sensitive-headers: Access-Control-Allow-Origin
+  ignored-headers: Access-Control-Allow-Origin
+  routes:
+    integrate:
+      strip-prefix: true
+      path: /basic-integrate/**
+      service-id: basic-integrate
+    equipment:
+      strip-prefix: true
+      path: /basic-equipment/**
+      service-id: basic-equipment
+    payment:
+      strip-prefix: true
+      path: /basic-payment/**
+      service-id: basic-payment
+    statistic:
+      strip-prefix: true
+      path: /basic-statistic/**
+      service-id: basic-statistic
+    upload:
+      strip-prefix: true
+      path: /upload/**
+      service-id: basic-statistic
+    manual:
+      strip-prefix: true
+      path: /basic-manual/**
+      service-id: basic-manual
+    sennor:
+      strip-prefix: true
+      path: /basic-sennor/**
+      service-id: basic-sennor
+
+jwt:
+  secret: 1c3c6d10c874432caedbbac21eb044c3
+  passUrl: 
+    - /basic-integrate/login
+    - /basic-integrate/registry
+    - /zuul/basic-equipment/fileUpload
+

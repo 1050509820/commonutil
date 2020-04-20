@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basic.integrate.dao.SysLogDao">
+	<resultMap id="BaseResultMap" type="com.basic.common.integrate.entity.SysLog">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="username" jdbcType="VARCHAR" property="username" />
+		<result column="type" jdbcType="VARCHAR" property="type" />
+		<result column="currUserId" jdbcType="VARCHAR" property="currUserId" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, username, type, currUserId,create_time, remark
+	</sql>
+
+
+	<insert id="addSysLog" parameterType="com.basic.common.integrate.entity.SysLog">
+		INSERT INTO sys_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="username != null">
+				username,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="currUserId != null">
+				currUserId,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="officeId != null">
+				office_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id, jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				#{username, jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type, jdbcType=VARCHAR},
+			</if>
+			<if test="currUserId != null">
+				#{currUserId, jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime, jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark, jdbcType=VARCHAR},
+			</if>
+			<if test="officeId != null">
+				#{officeId, jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+
+
+	<select id="selectSysLog" resultType="com.basic.common.integrate.entity.SysLog">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM sys_log
+		where 1=1
+			<if test="username != null and username != '' ">
+				and username like CONCAT('%', #{username},'%')
+			</if>
+			<if test="type != null and type != '' ">
+				and type = #{type}
+			</if>
+			<if test="startTime and startTime!=''">
+				and create_time &gt;= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				and create_time &lt;= #{endTime}
+			</if>
+			<if test="officeIdList != null">
+            	AND office_id IN
+            <foreach collection="officeIdList" index="index" item="officeId" open="(" separator="," close=")">
+                #{officeId}
+            </foreach>
+        	</if>
+				order by create_time desc
+	</select>
+
+	<select id="getLogType" resultType="java.lang.String">
+		SELECT  type  FROM sys_log   group by  type
+	</select>
+
+</mapper>

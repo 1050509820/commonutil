@@ -1,0 +1,66 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    registry-fetch-interval-seconds: 10
+  instance:
+    lease-expiration-duration-in-seconds: 30
+    lease-renewal-interval-in-seconds: 15
+
+server:
+  port: 5000
+
+spring:
+  application:
+    name: basic-gateway
+  http:
+    multipart:
+      max-file-size: 10Mb
+      max-request-size: 10Mb
+      
+logging:
+  file: logs/basic-gateway.log
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 80000
+
+ribbon:
+  ReadTimeout: 20000
+  ConnectTimeout: 20000
+  MaxAutoRetries: 0 
+  MaxAutoRetriesNextServer: 1 
+  OkToRetryOnAllOperations: true  
+
+zuul:
+  sensitive-headers: Access-Control-Allow-Origin
+  ignored-headers: Access-Control-Allow-Origin
+  host:
+    socket-timeout-millis: 20000
+    connect-timeout-millis: 20000
+  routes:
+    integrate:
+      strip-prefix: true
+      path: /basic-integrate/**
+      service-id: basic-integrate
+    equipment:
+      strip-prefix: true
+      path: /basic-equipment/**
+      service-id: basic-equipment
+    IoTCardPlatform:
+      strip-prefix: true
+      path: /basic-IoTCardPlatform/**
+      service-id: basic-IoTCardPlatform
+jwt:
+  secret: 1c3c6d10c874432caedbbac21eb044c3
+  passUrl: 
+    - /basic-integrate/login
+    - /basic-integrate/registry
+    - /zuul/basic-equipment/fileUpload
+

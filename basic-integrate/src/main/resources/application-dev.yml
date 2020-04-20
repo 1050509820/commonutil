@@ -1,0 +1,80 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    lease-expiration-duration-in-seconds: 30
+    lease-renewal-interval-in-seconds: 15        
+server:
+  port: 8763
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 13000
+
+ribbon:
+  ReadTimeout: 3000
+  ConnectTimeout: 3000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
+  OkToRetryOnAllOperations: true
+
+spring: 
+  application:
+    name: basic-integrate
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    #url: jdbc:mysql://rm-bp12145n3n4hsczz6ro.mysql.rds.aliyuncs.com:3306/integrate?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://47.96.19.98:3306/card?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: card
+    password: '&kjDgVi!&y6gLzJ*'
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 下面为连接池的补充设置，应用到上面所有数据源中：初始化大小，最小，最大
+    initialSize: 5
+    maxActive: 100
+    minIdle: 5
+    # 配置获取连接等待超时的时间
+    maxWait: 8000
+    #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    #配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 300
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,slf4j
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+
+    
+logging:
+  file: logs/basic-integrate.log
+  
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mapper/*.xml
+    
+jwt:
+  secret: 1c3c6d10c874432caedbbac21eb044c3
+  expire: 86400
+  
+map:
+  ak: 9bhFkAs2GXq7AkoepE1vdHGGpCTKr64X
+  pointX: 117.03
+  pointY: 39.38
+  zoom: 15
+  city: 天津
+  
+
+ 
