@@ -1,0 +1,18 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.dyzhsw.cardcontrol.config.NettyConfig",
+      "name": "netty",
+      "type": "com.dyzhsw.cardcontrol.config.NettyConfig"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.dyzhsw.cardcontrol.config.NettyConfig",
+      "defaultValue": 0,
+      "name": "netty.netty-monitor-port",
+      "type": "java.lang.Integer"
+    }
+  ]
+}
